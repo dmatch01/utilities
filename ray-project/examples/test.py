@@ -1,6 +1,10 @@
 import ray
 import time
 import numpy as np
+
+HEAD_SERVICE_IP_ENV = "EXAMPLE_CLUSTER_RAY_HEAD_SERVICE_HOST"
+HEAD_SERVICE_CLIENT_PORT_ENV = "EXAMPLE_CLUSTER_RAY_HEAD_SERVICE_PORT_CLIENT"
+
 @ray.remote
 def estimate_pi(num_samples):
     time.sleep(3)
@@ -12,7 +16,11 @@ def estimate_pi(num_samples):
     in_circle = xys_inside.shape[0]
     approx_pi = 4.0*in_circle/num_samples
     return approx_pi
-ray.init(address=‘auto’)
+
+head_service_ip = os.environ[HEAD_SERVICE_IP_ENV]
+client_port = os.environ[HEAD_SERVICE_CLIENT_PORT_ENV]
+ray.util.connect(f"{head_service_ip}:{client_port}")
+
 num_samples = 10000
 num_tasks = 128
 refs = [estimate_pi.remote(num_samples) for _ in range(num_tasks)]
