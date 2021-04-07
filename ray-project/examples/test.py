@@ -23,6 +23,6 @@ client_port = os.environ[HEAD_SERVICE_CLIENT_PORT_ENV]
 ray.util.connect(f"{head_service_ip}:{client_port}")
 
 num_samples = 10000
-num_tasks = 128
+num_tasks = 4
 refs = [estimate_pi.remote(num_samples) for _ in range(num_tasks)]
 ray.get(refs)
