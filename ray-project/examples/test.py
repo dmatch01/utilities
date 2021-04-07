@@ -1,7 +1,7 @@
 import ray
 import time
 import numpy as np
-@ray.remote(num_cpus=1)
+@ray.remote
 def estimate_pi(num_samples):
     time.sleep(3)
     xs = np.random.uniform(low=-1.0, high=1.0, size=num_samples)
